@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ManagerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,14 @@ Route::middleware(['auth:api'])->group(function(){
         Route::get('employees/{id}', 'show');
         Route::put('employees/{id}', 'update');
         Route::delete('employees/{id}', 'destroy');
+    });
+
+    Route::controller(ManagerController::class)->group(function(){
+        Route::get('managers', 'index');
+        Route::post('managers', 'store');
+        Route::get('managers/{id}', 'show');
+        Route::put('managers/{id}', 'update');
+        Route::delete('managers/{id}', 'destroy');
     });
 });
 

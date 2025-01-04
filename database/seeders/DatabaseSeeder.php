@@ -28,6 +28,10 @@ class DatabaseSeeder extends Seeder
             $user->update(['email' => 'employee' . $counter++ . '@example.com']);
         });
 
+        $manager = User::factory(50)->create()->each(function ($user) use (&$counter) {
+            $user->update(['email' => 'manager' . $counter++ . '@example.com']);
+        });
+
 
         $this->call([
             RoleSeeder::class,
@@ -47,8 +51,13 @@ class DatabaseSeeder extends Seeder
         $roleEmployee->syncPermissions($permissionsEmployee);
 
         $user->assignRole('super admin');
+
         $employee->each(function ($employee) {
             $employee->assignRole('employee');
+        });
+
+        $manager->each(function ($manager) {
+            $manager->assignRole('manager');
         });
     }
 }
