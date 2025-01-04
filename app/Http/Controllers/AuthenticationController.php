@@ -42,4 +42,23 @@ class AuthenticationController extends Controller
             return $this->error(config('rc.internal_server_error'));
         }
     }
+
+    public function logout()
+    {
+        JWTAuth::invalidate(JWTAuth::getToken());
+
+        return $this->success([],200,config('rc.logout_successfully'));
+    }
+
+    public function refresh()
+    {
+        $token = JWTAuth::refresh(JWTAuth::getToken());
+        $response = [
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ];
+
+        return $this->success($response, 200);
+    }
 }

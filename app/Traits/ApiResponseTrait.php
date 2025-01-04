@@ -8,6 +8,7 @@ trait ApiResponseTrait
 {
     protected function success(array $data = [], int $code = 200, array $message = []): JsonResponse
     {
+
         $response = $message ?? config('rc.successfully');
         $response['data'] = $data;
 

@@ -16,6 +16,8 @@ Route::get('/', function () {
 
 Route::controller(AuthenticationController::class)->group(function(){
     Route::post('login', 'login')->name('login');
+    Route::post('logout', 'logout')->name('logout')->middleware('auth:api');
+    Route::post('refresh', 'refresh')->name('refresh')->middleware('auth:api');
 });
 
 //modifying using middleware auth:api
@@ -38,6 +40,3 @@ Route::middleware(['auth:api'])->group(function(){
     });
 });
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
