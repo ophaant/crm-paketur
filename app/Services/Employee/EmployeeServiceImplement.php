@@ -75,20 +75,20 @@ class EmployeeServiceImplement extends ServiceApi implements EmployeeService{
 
     public function show(int $id): array
     {
-            $employee = $this->mainRepository->findOrFail($id);
+            $employee = $this->mainRepository->findEmployeeById($id);
             return ['employee' => $employee->toArray()];
     }
 
     public function update(mixed $id, mixed $data): array
     {
-            $employee = $this->mainRepository->findOrFail($id);
+            $employee = $this->mainRepository->findEmployeeById($id);
             $employee->update($data->validated());
             return ['employee' => new EmployeeResource($employee)];
     }
 
     public function delete(mixed $id): void
     {
-            $employee = $this->mainRepository->findOrFail($id);
+            $employee = $this->mainRepository->findEmployeeById($id);
             $employee->delete();
     }
 }

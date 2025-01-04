@@ -37,4 +37,14 @@ class EmployeeRepositoryImplement extends Eloquent implements EmployeeRepository
             $query->filterByIlikeName($request->get('search'));
         })->sortBy($request->get('sort_by'), $request->get('sort_order'));
     }
+
+    public function findEmployeeById(int $id): User
+    {
+        try {
+            return $this->model->role('employee')->findOrFail($id);
+        } catch (\Exception $e) {
+            abort(404);
+        }
+
+    }
 }
