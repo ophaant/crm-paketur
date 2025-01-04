@@ -22,6 +22,13 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
+
+        $counter = 1;
+        $employee = User::factory(120)->create()->each(function ($user) use (&$counter) {
+            $user->update(['email' => 'employee' . $counter++ . '@example.com']);
+        });
+
+
         $this->call([
             RoleSeeder::class,
             PermissionSeeder::class,
@@ -36,9 +43,12 @@ class DatabaseSeeder extends Seeder
         $roleManager->syncPermissions($permissionsManager);
 
         $roleEmployee = Role::findByName('employee');
-        $permissionsEmployee = Permission::where('name', 'like', '%employee%')->pluck('id','id')->all();
+        $permissionsEmployee = Permission::whereIn('name',['employee-list','employee-show'])->pluck('id','id')->all();
         $roleEmployee->syncPermissions($permissionsEmployee);
 
         $user->assignRole('super admin');
+        $employee->each(function ($employee) {
+            $employee->assignRole('employee');
+        });
     }
 }

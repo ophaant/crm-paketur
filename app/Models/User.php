@@ -3,7 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -13,7 +15,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens, HasRoles;
+    use HasFactory, Notifiable, HasApiTokens, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +26,8 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'phone',
+        'address',
     ];
 
     /**
@@ -59,4 +63,19 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function scopeFilterByIlikeName(Builder $query, ?string $name): void
+    {
+        $query->when($name, function ($query) use ($name) {
+            $query->orWhere('name', 'ILIKE', '%'.$name.'%');
+        });
+    }
+
+    public function scopeSortBy(Builder $query, ?string $sortBy, ?string $direction = 'asc'): void
+    {
+        if ($sortBy) {
+            $query->orderBy($sortBy, $direction);
+        }
+    }
+
 }

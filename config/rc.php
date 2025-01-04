@@ -3,6 +3,8 @@
 return [
     'successfully' => ['rc' => '0200', 'message' => 'Successfully', 'data' => null],
     'create_successfully' => ['rc' => '0201', 'message' => 'Create successfully', 'data' => null],
+    'update_successfully' => ['rc' => '0200', 'message' => 'Update successfully', 'data' => null],
+    'delete_successfully' => ['rc' => '0204', 'message' => 'Delete successfully', 'data' => null],
     'invalid_data' => ['rc' => '0400', 'message' => 'The given data was invalid', 'data' => null],
     'exceed_the_limit' => ['rc' => '0140', 'message' => 'Exceed the limit', 'data' => null],
     'unauthenticated' => ['rc' => '0401', 'message' => 'Unauthenticated', 'data' => null],

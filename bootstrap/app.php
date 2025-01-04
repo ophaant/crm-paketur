@@ -28,13 +28,6 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-//        $exceptions->render(function (AuthenticationException $e, Request $request) {
-//            if ($request->is('api/*')) {
-//                return response()->json([
-//                    'message' => $e->getMessage(),
-//                ], 401);
-//            }
-//        });
 
         $exceptions->render(function (ValidationException $e, Request $request) {
             $response = config('rc.invalid_data');
@@ -125,7 +118,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (TypeError $e, Request $request) {
-            $response = config('rc.internal_server_error');
+            $response = config('rc.invalid_data');
             unset($response['data']);
             return response()->json($response, 500);
         });
