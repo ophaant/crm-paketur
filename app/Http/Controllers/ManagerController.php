@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\ManagerStoreRequest;
+use App\Http\Requests\PathParamsRequest;
+use App\Http\Requests\QueryParamsRequest;
 use App\Services\Manager\ManagerService;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
@@ -20,7 +22,7 @@ class ManagerController extends Controller
         $this->managerService = $managerService;
     }
 
-    public function index(Request $request): JsonResponse
+    public function index(QueryParamsRequest $request): JsonResponse
     {
         if(!auth()->user()->can('manager-list'))
             return $this->error(config('rc.forbidden'), 403);
@@ -40,12 +42,12 @@ class ManagerController extends Controller
         return $this->success($manager,201,config('rc.create_successfully'));
     }
 
-    public function show(int $id): JsonResponse
+    public function show(PathParamsRequest $request): JsonResponse
     {
         if(!auth()->user()->can('manager-show'))
             return $this->error(config('rc.forbidden'), 403);
 
-        $manager = $this->managerService->show($id);
+        $manager = $this->managerService->show($request->id);
 
         return $this->success($manager);
     }
@@ -60,12 +62,12 @@ class ManagerController extends Controller
         return $this->success($manager, 200, config('rc.update_successfully'));
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(PathParamsRequest $request): JsonResponse
     {
         if(!auth()->user()->can('manager-delete'))
             return $this->error(config('rc.forbidden'), 403);
 
-        $this->managerService->delete($id);
+        $this->managerService->delete($request->id);
 
         return $this->success([], 200, config('rc.delete_successfully'));
     }

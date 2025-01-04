@@ -72,20 +72,20 @@ class ManagerServiceImplement extends ServiceApi implements ManagerService{
 
     public function show(int $id): array
     {
-        $manager = $this->mainRepository->findOrFail($id);
+        $manager = $this->mainRepository->findManagerById($id);
         return ['manager' => $manager->toArray()];
     }
 
     public function update(mixed $id, mixed $data): array
     {
-        $manager = $this->mainRepository->findOrFail($id);
+        $manager = $this->mainRepository->findManagerById($id);
         $manager->update($data->validated());
         return ['manager' => new ManagerResource($manager)];
     }
 
     public function delete(mixed $id): void
     {
-        $manager = $this->mainRepository->findOrFail($id);
+        $manager = $this->mainRepository->findManagerById($id);
         $manager->delete();
     }
 }

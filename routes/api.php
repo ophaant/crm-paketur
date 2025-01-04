@@ -26,7 +26,7 @@ Route::middleware(['auth:api'])->group(function(){
         Route::get('employees', 'index');
         Route::post('employees', 'store');
         Route::get('employees/{id}', 'show');
-        Route::put('employees/{id}', 'update');
+        Route::put('employees/{id}', 'update')->where('id', '[0-9]+');
         Route::delete('employees/{id}', 'destroy');
     });
 
@@ -34,7 +34,7 @@ Route::middleware(['auth:api'])->group(function(){
         Route::get('managers', 'index');
         Route::post('managers', 'store');
         Route::get('managers/{id}', 'show');
-        Route::put('managers/{id}', 'update');
+        Route::put('managers/{id}', 'update')->where('id', '[0-9]+');
         Route::delete('managers/{id}', 'destroy');
     });
 

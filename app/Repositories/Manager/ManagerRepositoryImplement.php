@@ -35,4 +35,14 @@ class ManagerRepositoryImplement extends Eloquent implements ManagerRepository{
             $query->filterByIlikeName($request->get('search'));
         })->sortBy($request->get('sort_by'), $request->get('sort_order'));
     }
+
+    public function findManagerById(int $id): User
+    {
+        try {
+            return $this->model->role('manager')->findOrFail($id);
+        } catch (\Exception $e) {
+            abort(404);
+        }
+
+    }
 }
