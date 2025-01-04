@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeShowRequest;
 use App\Http\Requests\EmployeeStoreRequest;
+use App\Http\Requests\QueryParamsRequest;
 use App\Services\Employee\EmployeeService;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +20,7 @@ class EmployeeController extends Controller
         $this->employeeService = $employeeService;
     }
 
-    public function index(Request $request): JsonResponse
+    public function index(QueryParamsRequest $request): JsonResponse
     {
         if(!auth()->user()->can('employee-list'))
             return $this->error(config('rc.forbidden'), 403);

@@ -15,7 +15,7 @@ return [
     'url_not_reachable' => ['rc' => '0144', 'message' => 'URL not reachable', 'data' => null],
     'method_not_allowed' => ['rc' => '0405', 'message' => 'Method not allowed', 'data' => null],
     'too_many_request' => ['rc' => '0429', 'message' => 'Too many request', 'data' => null],
-//    'internal_server_error' => ['rc' => '0500', 'message' => 'Internal server error', 'data' => null],
+    'internal_server_error' => ['rc' => '0500', 'message' => 'Internal server error', 'data' => null],
     'refresh_successfully' => ['rc' => '0200', 'message' => 'Refresh successfully', 'data' => null],
     'invalid_token' => ['rc' => '0401', 'message' => 'Invalid token', 'data' => null],
     'token_expired' => ['rc' => '0401', 'message' => 'Token expired', 'data' => null],

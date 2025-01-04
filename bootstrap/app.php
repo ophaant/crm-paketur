@@ -117,6 +117,12 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json($response, 500);
         });
 
+        $exceptions->render(function (PDOException $e, Request $request) {
+            $response = config('rc.invalid_data');
+            unset($response['data']);
+            return response()->json($response, 500);
+        });
+
         $exceptions->render(function (TypeError $e, Request $request) {
             $response = config('rc.invalid_data');
             unset($response['data']);

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,23 +24,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        $counter = 1;
-        $employee = User::factory(120)->create()->each(function ($user) use (&$counter) {
-            $user->update(['email' => 'employee' . $counter++ . '@example.com']);
-        });
-
-        $manager = User::factory(50)->create()->each(function ($user) use (&$counter) {
-            $user->update(['email' => 'manager' . $counter++ . '@example.com']);
-        });
-
-
         $this->call([
             RoleSeeder::class,
             PermissionSeeder::class,
         ]);
 
         $roleSuperAdmin = Role::findByName('super admin');
-        $permissions = Permission::pluck('id','id')->all();
+        $permissions = Permission::whereLike('name','%company%')->pluck('id','id')->all();
         $roleSuperAdmin->syncPermissions($permissions);
 
         $roleManager = Role::findByName('manager');
@@ -52,12 +43,26 @@ class DatabaseSeeder extends Seeder
 
         $user->assignRole('super admin');
 
-        $employee->each(function ($employee) {
-            $employee->assignRole('employee');
+        $counterEmployee = 1; // Counter for employees
+        $counterManager = 1;  // Counter for managers
+
+        Company::factory(10)->create()->each(function ($company) use (&$counterEmployee, &$counterManager) {
+            $employeeUsers = User::factory(rand(100, 200))->make();
+            foreach ($employeeUsers as $user) {
+                $user->email = 'employee' . $counterEmployee++ . '@example.com';
+                $user->company_id = $company->id;
+                $user->save();
+                $user->assignRole('employee');
+            }
+
+            $managerUsers = User::factory(rand(100, 200))->make();
+            foreach ($managerUsers as $user) {
+                $user->email = 'manager' . $counterManager++ . '@example.com';
+                $user->company_id = $company->id;
+                $user->save();
+                $user->assignRole('manager');
+            }
         });
 
-        $manager->each(function ($manager) {
-            $manager->assignRole('manager');
-        });
     }
 }

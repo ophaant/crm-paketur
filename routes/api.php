@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ManagerController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,7 +20,6 @@ Route::controller(AuthenticationController::class)->group(function(){
     Route::post('refresh', 'refresh')->name('refresh')->middleware('auth:api');
 });
 
-//modifying using middleware auth:api
 
 Route::middleware(['auth:api'])->group(function(){
     Route::controller(EmployeeController::class)->group(function(){
@@ -37,6 +36,14 @@ Route::middleware(['auth:api'])->group(function(){
         Route::get('managers/{id}', 'show');
         Route::put('managers/{id}', 'update');
         Route::delete('managers/{id}', 'destroy');
+    });
+
+    Route::controller(CompanyController::class)->group(function(){
+        Route::get('companies', 'index');
+        Route::post('companies', 'store');
+        Route::get('companies/{id}', 'show');
+        Route::put('companies/{id}', 'update');
+        Route::delete('companies/{id}', 'destroy');
     });
 });
 
