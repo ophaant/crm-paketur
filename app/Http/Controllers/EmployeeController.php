@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EmployeeShowRequest;
+use App\Http\Requests\PathParamsRequest;
 use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\QueryParamsRequest;
 use App\Services\Employee\EmployeeService;
@@ -40,32 +40,32 @@ class EmployeeController extends Controller
         return $this->success($employee,201,config('rc.create_successfully'));
     }
 
-    public function show(int $id): JsonResponse
+    public function show(PathParamsRequest $request): JsonResponse
     {
         if(!auth()->user()->can('employee-show'))
             return $this->error(config('rc.forbidden'), 403);
 
-        $employee = $this->employeeService->show($id);
+        $employee = $this->employeeService->show($request->id);
 
         return $this->success($employee);
     }
 
-    public function update(EmployeeStoreRequest $request, int $id): JsonResponse
+    public function update(EmployeeStoreRequest $request, PathParamsRequest $pathRequest): JsonResponse
     {
         if(!auth()->user()->can('employee-edit'))
             return $this->error(config('rc.forbidden'), 403);
 
-        $employee = $this->employeeService->update($id, $request);
+        $employee = $this->employeeService->update($pathRequest->id, $request);
 
         return $this->success($employee, 200, config('rc.update_successfully'));
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(PathParamsRequest $request): JsonResponse
     {
         if(!auth()->user()->can('employee-delete'))
             return $this->error(config('rc.forbidden'), 403);
 
-        $this->employeeService->delete($id);
+        $this->employeeService->delete($request->id);
 
         return $this->success([], 200, config('rc.delete_successfully'));
     }
