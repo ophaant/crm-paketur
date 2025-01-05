@@ -22,7 +22,7 @@ class AuthenticationController extends Controller
 
         try {
             if (!JWTAuth::attempt($credentials)) {
-               return $this->error(config('rc.unauthenticated'));
+               return $this->error(config('rc.record_not_found'));
             }
 
             // Get the authenticated user.
