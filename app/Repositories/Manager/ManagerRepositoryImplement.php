@@ -31,7 +31,9 @@ class ManagerRepositoryImplement extends Eloquent implements ManagerRepository{
 
     public function managerBuilder(Request $request): Builder
     {
-        return $this->model->role('manager')->where(function ($query) use ($request){
+        $companyId = auth()->user()->company_id;
+
+        return $this->model->role('manager')->where('company_id',$companyId)->where(function ($query) use ($request){
             $query->filterByIlikeName($request->get('search'));
         })->sortBy($request->get('sort_by'), $request->get('sort_order'));
     }
@@ -39,7 +41,8 @@ class ManagerRepositoryImplement extends Eloquent implements ManagerRepository{
     public function findManagerById(int $id): User
     {
         try {
-            return $this->model->role('manager')->findOrFail($id);
+            $companyId = auth()->user()->company_id;
+            return $this->model->role('manager')->where('company_id',$companyId)->findOrFail($id);
         } catch (\Exception $e) {
             abort(404);
         }

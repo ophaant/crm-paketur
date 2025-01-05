@@ -33,7 +33,9 @@ class EmployeeRepositoryImplement extends Eloquent implements EmployeeRepository
 
     public function employeeBuilder(Request $request): Builder
     {
-        return $this->model->role('employee')->where(function ($query) use ($request){
+        $companyId = auth()->user()->company_id;
+
+        return $this->model->role('employee')->where('company_id',$companyId)->where(function ($query) use ($request){
             $query->filterByIlikeName($request->get('search'));
         })->sortBy($request->get('sort_by'), $request->get('sort_order'));
     }
@@ -41,7 +43,9 @@ class EmployeeRepositoryImplement extends Eloquent implements EmployeeRepository
     public function findEmployeeById(int $id): User
     {
         try {
-            return $this->model->role('employee')->findOrFail($id);
+            $companyId = auth()->user()->company_id;
+
+            return $this->model->role('employee')->where('company_id',$companyId)->findOrFail($id);
         } catch (\Exception $e) {
             abort(404);
         }

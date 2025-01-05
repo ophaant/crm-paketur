@@ -64,7 +64,11 @@ class ManagerServiceImplement extends ServiceApi implements ManagerService{
 
     public function create(mixed $data): array
     {
-        $manager = $this->mainRepository->create($data->validated());
+        $companyId = auth()->user()->company_id;
+
+        $data = array_merge($data->validated(), ['company_id' => $companyId]);
+
+        $manager = $this->mainRepository->create($data);
         $manager->assignRole('manager');
         return ['manager' => new ManagerResource($manager)];
 
