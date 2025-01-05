@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
         ]);
 
-        $roleSuperAdmin = Role::findByName('super admin');
+        $roleSuperAdmin = Role::findByName('super_admin');
         $permissions = Permission::whereLike('name','%company%')->pluck('id','id')->all();
         $roleSuperAdmin->syncPermissions($permissions);
 
@@ -41,13 +41,13 @@ class DatabaseSeeder extends Seeder
         $permissionsEmployee = Permission::whereIn('name',['employee-list','employee-show'])->pluck('id','id')->all();
         $roleEmployee->syncPermissions($permissionsEmployee);
 
-        $user->assignRole('super admin');
+        $user->assignRole('super_admin');
 
         $counterEmployee = 1; // Counter for employees
         $counterManager = 1;  // Counter for managers
 
-        Company::factory(10)->create()->each(function ($company) use (&$counterEmployee, &$counterManager) {
-            $employeeUsers = User::factory(rand(100, 200))->make();
+        Company::factory(2)->create()->each(function ($company) use (&$counterEmployee, &$counterManager) {
+            $employeeUsers = User::factory(rand(10, 20))->make();
             foreach ($employeeUsers as $user) {
                 $user->email = 'employee' . $counterEmployee++ . '@example.com';
                 $user->company_id = $company->id;
@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
                 $user->assignRole('employee');
             }
 
-            $managerUsers = User::factory(rand(100, 200))->make();
+            $managerUsers = User::factory(rand(10, 20))->make();
             foreach ($managerUsers as $user) {
                 $user->email = 'manager' . $counterManager++ . '@example.com';
                 $user->company_id = $company->id;
